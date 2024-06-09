@@ -1,0 +1,56 @@
+from queue import Queue
+
+class Deque:
+    def __init__(self):
+        self.front_queue = Queue()
+        self.rear_queue = Queue()
+
+    def add_to_front(self, item):
+        self.front_queue.put(item)
+
+    def add_to_rear(self, item):
+        self.rear_queue.put(item)
+
+    def remove_from_front(self):
+        if not self.front_queue.empty():
+            return self.front_queue.get()
+        while self.rear_queue.qsize() > 1:
+            self.front_queue.put(self.rear_queue.get())
+        return self.rear_queue.get() if not self.rear_queue.empty() else None
+
+    def remove_from_rear(self):
+        if not self.rear_queue.empty():
+            return self.rear_queue.get()
+        while self.front_queue.qsize() > 1:
+            self.rear_queue.put(self.front_queue.get())
+        return self.front_queue.get() if not self.front_queue.empty() else None
+
+    def peek_front(self):
+        if not self.front_queue.empty():
+            return self.front_queue.queue[0]
+        while not self.rear_queue.empty():
+            self.front_queue.put(self.rear_queue.get())
+        return self.front_queue.queue[0] if not self.front_queue.empty() else None
+
+    def peek_rear(self):
+        if not self.rear_queue.empty():
+            return self.rear_queue.queue[-1]
+        while not self.front_queue.empty():
+            self.rear_queue.put(self.front_queue.get())
+        return self.rear_queue.queue[-1] if not self.rear_queue.empty() else None
+
+    def is_empty(self):
+        return self.front_queue.empty() and self.rear_queue.empty()
+
+# Example usage
+if __name__ == "__main__":
+    deque = Deque()
+    deque.add_to_front(1)
+    deque.add_to_rear(2)
+    deque.add_to_front(3)
+
+    print("Removed from front:", deque.remove_from_front())  # Output: 3
+    print("Peek rear:", deque.peek_rear())  # Output: 2
+    print("Removed from rear:", deque.remove_from_rear())  # Output: 2
+    print("Removed from front:", deque.remove_from_front())  # Output: 1
+    print("Is deque empty?", deque.is_empty())  # Output: True
