@@ -1,0 +1,67 @@
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+
+class Steque:
+    def __init__(self):
+        self.front = None
+        self.rear = None
+        self.size = 0
+
+    def push(self, item):
+        new_node = Node(item)
+        if self.is_empty():
+            self.front = self.rear = new_node
+        else:
+            new_node.next = self.front
+            self.front = new_node
+        self.size += 1
+
+    def pop(self):
+        if self.is_empty():
+            raise Exception("Steque is empty")
+        item = self.front.value
+        self.front = self.front.next
+        if self.front is None:
+            self.rear = None
+        self.size -= 1
+        return item
+
+    def enqueue(self, item):
+        new_node = Node(item)
+        if self.is_empty():
+            self.front = self.rear = new_node
+        else:
+            self.rear.next = new_node
+            self.rear = new_node
+        self.size += 1
+
+    def is_empty(self):
+        return self.size == 0
+
+    def get_size(self):
+        return self.size
+
+if __name__ == "__main__":
+        steque = Steque()
+
+        # Test push
+        steque.push(1)
+        steque.push(2)
+        steque.push(3)
+
+        print("Popped:", steque.pop())  # Output: 3
+
+        # Test enqueue
+        steque.enqueue(4)
+        steque.enqueue(5)
+
+        print("Popped:", steque.pop())  # Output: 2
+        print("Popped:", steque.pop())  # Output: 1
+        print("Popped:", steque.pop())  # Output: 4
+        print("Popped:", steque.pop())  # Output: 5
+
+        # Check if steque is empty
+        print("Is empty:", steque.is_empty())  # Output: True
+
